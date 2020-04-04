@@ -133,7 +133,7 @@ inline bool read_control_data(std::string filename, std::vector<control_s>& posi
 	// Run over each single line:
 	while(getline(in_file_pos, line_pos)){
 
-		std::istringstream iss_pos(line_pos);
+		std::istringstream istringstream_pos(line_pos);
 
 		// Declare position values:
 		double velocity, yawrate;
@@ -142,10 +142,8 @@ inline bool read_control_data(std::string filename, std::vector<control_s>& posi
 		control_s meas;
 
 		//read data from line to values:
-
-		iss_pos >> velocity;
-		iss_pos >> yawrate;
-
+		istringstream_pos >> velocity;
+		istringstream_pos >> yawrate;
 		
 		// Set values
 		meas.velocity = velocity;
@@ -176,7 +174,7 @@ inline bool read_gt_data(std::string filename, std::vector<ground_truth>& gt) {
 	// Run over each single line:
 	while(getline(in_file_pos, line_pos)){
 
-		std::istringstream iss_pos(line_pos);
+		std::istringstream istringstream_pos(line_pos);
 
 		// Declare position values:
 		double x, y, azimuth;
@@ -185,9 +183,9 @@ inline bool read_gt_data(std::string filename, std::vector<ground_truth>& gt) {
 		ground_truth single_gt; 
 
 		//read data from line to values:
-		iss_pos >> x;
-		iss_pos >> y;
-		iss_pos >> azimuth;
+		istringstream_pos >> x;
+		istringstream_pos >> y;
+		istringstream_pos >> azimuth;
 
 		// Set values
 		single_gt.x = x;
@@ -219,14 +217,14 @@ inline bool read_landmark_data(std::string filename, std::vector<LandmarkObs>& o
 	// Run over each single line:
 	while(getline(in_file_obs, line_obs)){
 
-		std::istringstream iss_obs(line_obs);
+		std::istringstream istringstream_obs(line_obs);
 
 		// Declare position values:
 		double local_x, local_y;
 
 		//read data from line to values:
-		iss_obs >> local_x;
-		iss_obs >> local_y;
+		istringstream_obs >> local_x;
+		istringstream_obs >> local_y;
 
 		// Declare single landmark measurement:
 		LandmarkObs meas;

@@ -29,12 +29,13 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
     particles.resize(num_particles);
     weights.resize(num_particles);
 
-    // extract standard deviations
+    // Standard deviations
     double std_x, std_y, std_theta;
     std_x = std[0];
     std_y = std[1];
     std_theta = std[2];
-    //create gaussian distributions
+    
+	//Gaussian
     default_random_engine gen;
     normal_distribution<double> dist_x(x, std_x);
     normal_distribution<double> dist_y(y, std_y);
@@ -51,7 +52,6 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
     }
 
     is_initialized = true;
-    // cout << "debug state: initialize completed." << endl;
 }
 
 void ParticleFilter::prediction(double delta_t, double std_pos[], double velocity, double yaw_rate) {
@@ -60,13 +60,14 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
 	//  http://en.cppreference.com/w/cpp/numeric/random/normal_distribution
 	//  http://www.cplusplus.com/reference/random/default_random_engine/
     
-    // extract standard deviations
+    //Standard deviations
     double std_x, std_y, std_theta;
     double x0, y0, theta0;
     std_x = std_pos[0];
     std_y = std_pos[1];
     std_theta = std_pos[2];
-    //create gaussian distributions
+    
+	//Gaussian distributions
     default_random_engine gen;
     normal_distribution<double> dist_x(0, std_x);
     normal_distribution<double> dist_y(0, std_y);
@@ -89,12 +90,11 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
             particles[i].y = y0 + velocity*delta_t*sin(theta0);
         }
         
-        //add random gaussian noise
+        //Random gaussian noise
         particles[i].x += dist_x(gen);
         particles[i].y += dist_y(gen);
         particles[i].theta += dist_theta(gen);
     }
-    // cout << "debug state: prediction completed." << endl;
 }
 
 void ParticleFilter::dataAssociation(std::vector<LandmarkObs> predicted, std::vector<LandmarkObs>& observations) {
@@ -144,7 +144,6 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
         for(unsigned int k=0; k<landmarks.size(); ++k){
             //distance between particle and landmark
             landmark_dist = dist(xp, yp, landmarks[k].x_f, landmarks[k].y_f);
-            // cout << "landmark distance: " << landmark_dist << endl;
 
             // select landmarks in sensor range
             if(landmark_dist < sensor_range){
@@ -184,17 +183,10 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
             //Multivariate-Gaussian probability 
             exponent = pow(xm-mu_x,2)/gauss_den_x + pow(ym-mu_y,2)/gauss_den_y;
             weight *= gauss_norm * exp(-exponent);
-
-            // cout << "xp: " << xp << "\typ: " << yp << "\tmin_idx: " << min_idx << "\tmin dist: " << obs_to_mark_min << endl;
-            // cout << "xm: " << xm << "\tmu_x: " << mu_x << "\tym: "<< ym << "\tmu_y: " << mu_y << endl;
-            
-            // cout << "exponent: " << exponent << "\tstep weight: " << weight << endl;
         }
         particles[i].weight = weight;
         weights[i] = weight;
-        // cout << "particle weight: " << weight << endl;
     }
-    // cout << "debug state: updateWeights completed." << endl;
 }
 
 
@@ -219,9 +211,6 @@ void ParticleFilter::resample() {
         new_particles[i] = particles[index];
     }
     particles = new_particles;
-
-
-    // cout << "debug state: resampled completed." << endl;
 }
 
 
